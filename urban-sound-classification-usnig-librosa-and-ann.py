@@ -28,7 +28,6 @@ from tqdm import tqdm
 
 #-------------------------------
 
-pwd()
 
 #| #### Importing the metadata file contains the information about the audio dataset.
 
@@ -38,7 +37,6 @@ metadata.head()
 
 #-------------------------------
 
-pwd
 
 #| #### Audio Classes
 

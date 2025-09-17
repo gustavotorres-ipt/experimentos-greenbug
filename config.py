@@ -1,6 +1,15 @@
 import os
 
-TIPO_ESPECTROGRAMA = "melspec"
+BATCH_SIZE = 32
+LEARNING_RATE = 1e-5
+EPOCHS = 100
+
+NUM_CLASSES = 10
+
+N_FOLDS = 10
+
+
+TIPO_ESPECTROGRAMA = "logmel"
 
 TAM_IMAGENS = {"melspec": 128, "logmel": 128, "l2m": 128, "l3m": 128}
 

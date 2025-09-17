@@ -8,21 +8,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 #import skimage.io as io
 import librosa.display
+from tensorflow.python.ops.gen_nn_ops import leaky_relu
 from config import CAMINHO_SAIDA_METADADOS, DIR_BASE_ESPECTROGRAMAS, TAM_IMAGENS, TIPO_ESPECTROGRAMA
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score
 from tqdm import tqdm
 from tensorflow.keras.losses import CategoricalCrossentropy
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import GRU, LSTM, Conv2D, MaxPooling2D, Dense, Conv1D, MaxPooling1D, Flatten, Dropout, Activation, TimeDistributed
+from tensorflow.keras.layers import GRU, LSTM, Conv2D, MaxPooling2D, Dense, Conv1D, MaxPooling1D, Flatten, Dropout, Activation, TimeDistributed, BatchNormalization, ReLU
 from PIL import Image
 from sklearn.preprocessing import OneHotEncoder
+from csnn import CSNNModel
 
 #----------------------------------------
 # TODO gerar o resto dos espectrogramas
 
-N_EPOCHS = 200
-BATCH_SIZE = 32
+N_EPOCHS = 100
+BATCH_SIZE = 4
 N_FOLDS = 10
 
 #----------------------------------------
@@ -34,54 +36,115 @@ def treinar_modelo(X_train, y_train, X_val, y_val, num_classes):
 
     input_shape = X_train[0].shape
 
+    # Initialize the model
+    model = Sequential()
+
+    # Convolution Layer 1
+    model.add(Conv2D(8, (3, 3), input_shape=input_shape, padding='valid'))
+    model.add(BatchNormalization())
+    model.add(ReLU())
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+
+    # Convolution Layer 2
+    model.add(Conv2D(16, (3, 3), padding='valid'))
+    model.add(BatchNormalization())
+    model.add(ReLU())
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
+
+    # Convolution Layer 3
+    model.add(Conv2D(32, (3, 3), padding='valid'))
+    model.add(BatchNormalization())
+    model.add(ReLU())
+
+    # Flatten the output from the last convolutional layer
+    model.add(Flatten())
+
+    # Fully Connected Layer 1
+    model.add(Dense(500))
+    model.add(ReLU())
+
+    # Fully Connected Layer 2
+    model.add(Dense(450))
+    model.add(ReLU())
+
+    model.add(Dense(num_classes, activation= 'softmax'))
+
+    # Compile the model using categorical crossentropy for multi-class classification
+    model.compile(loss="categorical_crossentropy",
+                  optimizer=Adam(learning_rate=1e-4),
+                  metrics=['accuracy'])
+
+    model.summary()
+
     with tf.device(device):
-        model = Sequential()
-
-        model.add(Conv2D(96, kernel_size=(11,11), strides= 4,
-                        padding= 'valid', activation= 'relu',
-                        input_shape= input_shape,
-                        kernel_initializer= 'he_normal'))
-
-        model.add(MaxPooling2D(pool_size=(3,3), strides= (2,2),
-                               padding= 'valid', data_format= None))
-
-        model.add(Conv2D(256, kernel_size=(5,5), strides= 1,
-                         padding= 'same', activation= 'relu',
-                         kernel_initializer= 'he_normal'))
-
-        model.add(MaxPooling2D(pool_size=(3,3), strides= (2,2),
-                               padding= 'valid', data_format= None))
-
-        model.add(Conv2D(384, kernel_size=(3,3), strides= 1,
-                         padding= 'same', activation= 'relu',
-                         kernel_initializer= 'he_normal'))
-
-        model.add(Conv2D(384, kernel_size=(3,3), strides= 1,
-                         padding= 'same', activation= 'relu',
-                         kernel_initializer= 'he_normal'))
-
-        model.add(Conv2D(256, kernel_size=(3,3), strides= 1,
-                         padding= 'same', activation= 'relu',
-                         kernel_initializer= 'he_normal'))
-
-        model.add(MaxPooling2D(pool_size=(3,3), strides= (2,2),
-                              padding= 'valid', data_format= None))
-
-        model.add(Flatten())
-        model.add(Dense(4096, activation= 'relu'))
-        model.add(Dense(4096, activation= 'relu'))
-        model.add(Dense(1000, activation= 'relu'))
-        model.add(Dense(num_classes, activation= 'softmax'))
-
-        # Compile the model using categorical crossentropy for multi-class classification
-        model.compile(loss="categorical_crossentropy",
-                      optimizer=Adam(learning_rate=1e-4),
-                      metrics=['accuracy'])
-
-        # Print the model summary
-        model.summary()
         model.fit(X_train, y_train, epochs=N_EPOCHS, validation_data=(X_val, y_val),
                   batch_size=BATCH_SIZE, shuffle=True)
+
+    # # Create the model
+    # model = CSNNModel(num_classes=10, input_shape=input_shape)
+
+    # model.build((None, input_shape[0], input_shape[1], input_shape[2]))  # Batch size is None, input shape is (128, 128, 3)
+
+    # # Compile the model
+    # model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    # # Print the model summary
+    # model.summary()
+
+    # with tf.device(device):
+    #     model.fit(X_train, y_train, epochs=100, validation_data=(X_val, y_val),
+    #               batch_size=2, shuffle=True)
+
+    # return model
+
+    # with tf.device(device):
+    #     model = Sequential()
+
+    #     model.add(Conv2D(96, kernel_size=(11,11), strides= 4,
+    #                     padding= 'valid', activation= 'relu',
+    #                     input_shape= input_shape,
+    #                     kernel_initializer= 'he_normal'))
+
+    #     model.add(MaxPooling2D(pool_size=(3,3), strides= (2,2),
+    #                            padding= 'valid', data_format= None))
+
+    #     model.add(Conv2D(256, kernel_size=(5,5), strides= 1,
+    #                      padding= 'same', activation= 'relu',
+    #                      kernel_initializer= 'he_normal'))
+
+    #     model.add(MaxPooling2D(pool_size=(3,3), strides= (2,2),
+    #                            padding= 'valid', data_format= None))
+
+    #     model.add(Conv2D(384, kernel_size=(3,3), strides= 1,
+    #                      padding= 'same', activation= 'relu',
+    #                      kernel_initializer= 'he_normal'))
+
+    #     model.add(Conv2D(384, kernel_size=(3,3), strides= 1,
+    #                      padding= 'same', activation= 'relu',
+    #                      kernel_initializer= 'he_normal'))
+
+    #     model.add(Conv2D(256, kernel_size=(3,3), strides= 1,
+    #                      padding= 'same', activation= 'relu',
+    #                      kernel_initializer= 'he_normal'))
+
+    #     model.add(MaxPooling2D(pool_size=(3,3), strides= (2,2),
+    #                           padding= 'valid', data_format= None))
+
+    #     model.add(Flatten())
+    #     model.add(Dense(4096, activation= 'relu'))
+    #     model.add(Dense(4096, activation= 'relu'))
+    #     model.add(Dense(1000, activation= 'relu'))
+    #     model.add(Dense(num_classes, activation= 'softmax'))
+
+    #     # Compile the model using categorical crossentropy for multi-class classification
+    #     model.compile(loss="categorical_crossentropy",
+    #                   optimizer=Adam(learning_rate=1e-4),
+    #                   metrics=['accuracy'])
+
+    #     # Print the model summary
+    #     model.summary()
+    #     model.fit(X_train, y_train, epochs=N_EPOCHS, validation_data=(X_val, y_val),
+    #               batch_size=BATCH_SIZE, shuffle=True)
     return model
 
 
@@ -159,15 +222,40 @@ def carregar_espectrogramas(caminhos_arquivos, rotulos_metadados):
         subarquivos = [arquivo for arquivo in arquivos_fold if pat.match(arquivo)]
 
         for subarquivo in subarquivos:
-            espect = np.asarray(Image.open(f"{caminho_pasta}/{subarquivo}"))
+            espetrog = np.asarray(Image.open(f"{caminho_pasta}/{subarquivo}"))
 
-            espect = espect.reshape((espect.shape[0] , espect.shape[1], 1))
+            espetrog = espetrog.reshape((espetrog.shape[0] , espetrog.shape[1], 1))
 
-            espectrogramas.append(espect)
+            espectrogramas.append(espetrog)
             labels.append(lbl)
 
     return np.array(espectrogramas), np.array(labels)
 
+#---------------------------------
+def visualizar_imagem(img):
+    plt.imshow(img)
+    plt.show()
+
+def redimensionar_imagens(imagens, size, rgb_transform=False):
+
+    # if rgb_transform and imagens.shape[3] == 1:
+    #     imagens = np.stack((imagens, imagens, imagens), axis=3)[:,:,:,:,0]
+
+    resized_imgs = []
+
+    for i, img in enumerate(imagens):
+        # Pillow resize
+        resized_img = Image.fromarray(img[:, :, 0]).resize(size)
+
+        if rgb_transform and imagens.shape[3] == 1:
+            resized_img = resized_img.convert('RGB')
+
+        resized_img = np.array(resized_img)
+        # visualizar_imagem(resized_img)
+
+        resized_imgs.append(resized_img)
+
+    return np.array(resized_imgs)
 #---------------------------------
 metadata = pd.read_csv(CAMINHO_SAIDA_METADADOS)
 
@@ -205,9 +293,16 @@ for fold_val in range(1, N_FOLDS+1):
 
     X_val, y_val = carregar_espectrogramas(caminhos_audios_val, df_val["class"].values)
 
+    X_train = redimensionar_imagens(X_train, size=(100, 100), rgb_transform=True)
+    X_val = redimensionar_imagens(X_val, size=(100, 100), rgb_transform=True)
+
     # Normalizar os dados
     X_train = X_train / 255
     X_val = X_val / 255
+
+    for _ in range(5):
+        X_sel = X_train[np.random.randint(X_train.shape[0])]
+        img = np.stack((X_sel, X_sel, X_sel), axis=2)[:,:,:,0]
 
     y = np.hstack((y_train, y_val))
     n_classes = np.unique(y).shape[0]
