@@ -8,6 +8,7 @@ from model import ConvNet
 from numpy.typing import NDArray
 from PIL import Image
 from config import N_FOLDS, DIR_BASE_ESPECTROGRAMAS
+from tqdm import tqdm
 
 
 def carregar_imagens(caminhos_arquivos: list[str], rotulos_metadados: NDArray
@@ -25,21 +26,21 @@ def carregar_imagens(caminhos_arquivos: list[str], rotulos_metadados: NDArray
         # Filtra todos os subarquivos com o prefixo desejado
         # e coloca eles em uma lista.
         # Isso é para os casos de imagens longas que foram cortadas.
-        pat = re.compile(r'%s_[0-9]+.png' % nome_arquivo_sem_formato)
-        subarquivos = [arquivo for arquivo in arquivos_fold if pat.match(arquivo)]
+        # pat = re.compile(r'%s_[0-9]+.png' % nome_arquivo_sem_formato)
+        # subarquivos = [arquivo for arquivo in arquivos_fold if pat.match(arquivo)]
 
-        for subarquivo in subarquivos:
-            image_espec = Image.open(f"{caminho_pasta}/{subarquivo}").convert('RGB')
-            #image_espec.show()
-            #breakpoint()
+        # for subarquivo in subarquivos:
+        # image_espec = Image.open(f"{caminho_pasta}/{subarquivo}").convert('RGB')
+        image_espec = Image.open(caminho_arquivo).convert('RGB')
+        #image_espec.show()
 
-            espectrog = np.asarray(image_espec)
-            espectrog = np.moveaxis(espectrog, 2, 0)
+        espectrog = np.asarray(image_espec)
+        espectrog = np.moveaxis(espectrog, 2, 0)
 
-            # espetrog = espetrog.reshape((1, espetrog.shape[0] , espetrog.shape[1]))
+        # espetrog = espetrog.reshape((1, espetrog.shape[0] , espetrog.shape[1]))
 
-            espectrogramas.append(espectrog)
-            labels.append(lbl)
+        espectrogramas.append(espectrog)
+        labels.append(lbl)
 
     return np.array(espectrogramas).astype(np.float32), \
            np.array(labels).astype(np.int64)
@@ -97,7 +98,7 @@ def carregar_dados_treino(
 
 def carregar_dados_teste(
     df_metadata: pd.DataFrame, fold_test: int, lbl_encoder: LabelEncoder
-):
+) -> tuple[NDArray, NDArray]:
     """ Função que lê todas as imagens de teste, seus respectivos rótulos e
     devolve ambos no formato NumPy.
 

@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from funcoes_espectrogramas import salvar_espectrogramas
-from config import CAMINHO_SAIDA_METADADOS, TEMPO_AUDIO_MAXIMO, DIR_BASE_ESPECTROGRAMAS
+from config import CAMINHO_SAIDA_METADADOS, TEMPO_AUDIO_MAXIMO, DIR_BASE_ESPECTROGRAMAS, N_FOLDS
 
 #-------------------------------------------------
 def filtrar_audios_curtos(audios_names, valid_audios):
@@ -18,7 +18,7 @@ def adicionar_folds(folds_audios, audios_names):
 
     for audio in audios_names:
         # Procura o arquivo nos folds até encontrar
-        for n_fold in range(1, 11):
+        for n_fold in range(1, N_FOLDS + 1):
             # Se encontrar o fold correspondente, posso sair do loop
             if audio in folds_audios[f"fold{n_fold}"]:
                 folds.append(n_fold)
@@ -41,7 +41,7 @@ metadata = metadata.loc[metadata["duration"].values.astype(float) >= TEMPO_AUDIO
 # Dicionário contendo o fold correspondente aos áudios
 folds_audios = {}
 
-for i in range(1, 11):
+for i in range(1, N_FOLDS + 1):
     audios_names = os.listdir(f"./data/fold{i}")
     audios_names = filtrar_audios_curtos(audios_names, metadata["slice_file_name"].values)
 

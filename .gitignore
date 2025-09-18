@@ -2,3 +2,7 @@ __pycache__/
 *.wmv
 *.wav
 *.png
+*.pth
+*.pt
+*.h5
+*.zip

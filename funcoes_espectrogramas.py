@@ -60,16 +60,24 @@ def salvar_espectrogramas(audio_clips, audio_path, spectrogram_path):
             mel_spec = gerar_espectrograma(y, sr)
             mel_spec = 255 * (mel_spec - mel_spec.min()) / (mel_spec.max() - mel_spec.min())
             mel_spec = np.flip(mel_spec, axis=0) # put low frequencies at the bottom in image
-            mel_spec_slices = cortar_espectrograma(
-                mel_spec, TAM_IMAGENS[TIPO_ESPECTROGRAMA], TAM_IMAGENS[TIPO_ESPECTROGRAMA]
-            )
-            # Salva o arquivo e começa o próximo
-            for j in range(len(mel_spec_slices)):
-                full_filename = fullpath + f"_{j+1}.png"
-                spec_save = mel_spec_slices[j][:, :, 0]
 
-                im = Image.fromarray(spec_save).convert("L")
-                im.save(full_filename)
+            im = Image.fromarray(mel_spec).convert("L")
+
+            dim = TAM_IMAGENS[TIPO_ESPECTROGRAMA]
+            resized_img = im.resize((dim, dim))
+            full_filename = fullpath + ".png"
+            resized_img.save(full_filename)
+
+            # mel_spec_slices = cortar_espectrograma(
+            #     mel_spec, TAM_IMAGENS[TIPO_ESPECTROGRAMA], TAM_IMAGENS[TIPO_ESPECTROGRAMA]
+            # )
+            # # Salva o arquivo e começa o próximo
+            # for j in range(len(mel_spec_slices)):
+            #     full_filename = fullpath + f"_{j+1}.png"
+            #     spec_save = mel_spec_slices[j][:, :, 0]
+
+            #     im = Image.fromarray(spec_save).convert("L")
+            #     im.save(full_filename)
 
             print("Arquivo %s salvo com sucesso." % full_filename)
 

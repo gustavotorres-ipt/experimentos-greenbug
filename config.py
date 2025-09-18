@@ -2,7 +2,7 @@ import os
 
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-5
-EPOCHS = 100
+EPOCHS = 5
 
 NUM_CLASSES = 10
 

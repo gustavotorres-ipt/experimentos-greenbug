@@ -1,5 +1,5 @@
 import os
-import re
+import json
 import torch
 import pandas as pd
 import numpy as np
@@ -7,16 +7,45 @@ from numpy.typing import NDArray
 from sklearn.preprocessing import LabelEncoder
 from torch import nn
 from model import ConvNet, ResNet101, EarlyStopping
-from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE, CAMINHO_SAIDA_METADADOS, NUM_CLASSES, EPOCHS
+from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE
+from config import CAMINHO_SAIDA_METADADOS, NUM_CLASSES, EPOCHS, TIPO_ESPECTROGRAMA
 from loader import carregar_dados_treino, carregar_dados_teste
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
+def calc_metricas( y_real: NDArray, y_prob: NDArray) -> dict[str, float]:
+    """ Calcula métricas de acurácia, precisão, recall e F1.
+
+    Args:
+        total_correct_epoch: Number of correctly classified samples.
+        num_samples: total of samples.
+
+    Returns:
+        dict[str, float]: Dicionário contendo as métrica e seus
+            respectivos valores para esse fold de teste.
+    """
+    y_pred = y_prob.argmax(1)
+
+    accuracy = accuracy_score(y_real, y_pred)
+    precision = precision_score(y_real, y_pred, average='macro', zero_division=0.0)
+    recall = recall_score(y_real, y_pred, average='macro', zero_division=0.0)
+    f1 = f1_score(y_real, y_pred, average='macro', zero_division=0.0)
+
+    return {
+        'accuracy': accuracy,
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+    }
+
+
 def treinar_modelo(
-    X_train: NDArray, X_test: NDArray, y_train: NDArray, y_test: NDArray
-) -> None:
+    X_train: NDArray, X_test: NDArray,
+    y_train: NDArray, y_test: NDArray,
+    fold_teste: int) -> None:
     """ Treina o modelo utilizando dados de treinamento e verifica
     o progresso utilizando os dados de validação.
 
@@ -27,6 +56,7 @@ def treinar_modelo(
             size (num_images, Channels, Height, Width)
         y_train: rótulos de treinamento.
         y_test: rótulos de test.
+        fold_teste
 
     """
     input_shape = (BATCH_SIZE, *X_train[0].shape)
@@ -35,8 +65,8 @@ def treinar_modelo(
 
     X_val, y_val = X_test, y_test
 
-    dl_model = ConvNet(input_shape, NUM_CLASSES)
-    # dl_model = ResNet101(NUM_CLASSES)
+    # dl_model = ConvNet(input_shape, NUM_CLASSES)
+    dl_model = ResNet101(NUM_CLASSES)
     dl_model.to(device)
 
     criterion = nn.CrossEntropyLoss()
@@ -47,22 +77,36 @@ def treinar_modelo(
     for epoch in range(EPOCHS):
 
         print(f"Epoch {epoch}...")
-        avg_loss_train, avg_accuracy_train = train_one_epoch(
+
+        avg_loss_train, y_prob_train = train_one_epoch(
             X_train, y_train, dl_model, criterion, optimizer)
-        avg_loss_val, avg_accuracy_val = val_one_epoch(
+        avg_loss_val, y_prob_val = val_one_epoch(
             X_val, y_val, dl_model, criterion)
 
+        dict_metricas_train = calc_metricas(y_train, y_prob_train)
+        dict_metricas_val = calc_metricas(y_val, y_prob_val)
+
+        accuracy_train = dict_metricas_train['accuracy']
+        accuracy_val = dict_metricas_val['accuracy']
+
         print(f"Training loss: {avg_loss_train} / Validation loss: {avg_loss_val}")
-        print(f"Training accuracy: {avg_accuracy_train} / Validation accuracy: {avg_accuracy_val}")
+        print(f"Training accuracy: {accuracy_train} / Validation accuracy: {accuracy_val}")
 
         early_stopping(avg_loss_val, dl_model)
         if early_stopping.early_stop:
             print("Early stopping")
             break
 
-    _, avg_accuracy_test = val_one_epoch(
-        X_test, y_test, dl_model, criterion)
-    print(f"Test accuracy: {avg_accuracy_test}")
+    early_stopping.load_best_model(dl_model)
+    avg_loss_val, y_prob_val = val_one_epoch(
+        X_val, y_val, dl_model, criterion)
+    dict_metricas_val = calc_metricas(y_val, y_prob_val)
+
+    salvar_modelo_e_resultados(dl_model, dict_metricas_val, fold_teste)
+
+    # _, avg_accuracy_test = val_one_epoch(
+    #     X_test, y_test, dl_model, criterion)
+    # print(f"Test accuracy: {avg_accuracy_test}")
 
 def split_train_val(X_train: NDArray, y_train: NDArray
                     ) -> tuple[NDArray, NDArray, NDArray, NDArray]:
@@ -80,13 +124,14 @@ def split_train_val(X_train: NDArray, y_train: NDArray
 def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
     dl_model.train()
 
-    total_correct_epoch = 0
+    # total_correct_epoch = 0
     total_loss_epoch = 0
     num_samples_train = X_train.shape[0]
+    y_prob_classes = []
 
-    for end_batch in range(BATCH_SIZE, num_samples_train, BATCH_SIZE):
+    for start_batch in range(0, num_samples_train, BATCH_SIZE):
 
-        start_batch = end_batch - BATCH_SIZE
+        end_batch = start_batch + BATCH_SIZE
 
         X_batch = X_train[start_batch:end_batch]
         y_batch = y_train[start_batch:end_batch]
@@ -95,7 +140,7 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
         y_batch = torch.asarray(y_batch).to(device)
 
         y_prob_class = dl_model(X_batch)
-        y_pred = y_prob_class.argmax(1)
+        # y_pred = y_prob_class.argmax(1)
 
         loss = criterion(y_prob_class, y_batch)
 
@@ -106,13 +151,18 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
         loss_batch = loss.item()
 
         total_loss_epoch += loss_batch
-        total_correct_epoch += (y_pred == y_batch).sum().item()
+
+        y_prob_classes.append(y_prob_class.detach().cpu())
+        # total_correct_epoch += (y_pred == y_batch).sum().item()
 
         # print("Loss batch:", loss_batch)
     avg_loss_epoch = total_loss_epoch / num_samples_train
-    avg_accuracy_epoch = total_correct_epoch / num_samples_train
+    y_prob_classes = np.vstack(y_prob_classes)
 
-    return avg_loss_epoch, avg_accuracy_epoch
+    # Calcular os valores das métricas e coloca tudo em um dicionário
+    # avg_accuracy_epoch = total_correct_epoch / num_samples_train
+
+    return avg_loss_epoch, y_prob_classes
 
 
 def val_one_epoch(X_val, y_val, dl_model, criterion):
@@ -122,11 +172,12 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
     total_correct_epoch = 0
     total_loss_epoch = 0
     num_samples_train = X_val.shape[0]
+    y_prob_classes = []
 
     with torch.no_grad():
-        for end_batch in range(BATCH_SIZE, num_samples_train, BATCH_SIZE):
+        for start_batch in range(0, num_samples_train, BATCH_SIZE):
 
-            start_batch = end_batch - BATCH_SIZE
+            end_batch = start_batch + BATCH_SIZE
 
             X_batch = X_val[start_batch:end_batch]
             y_batch = y_val[start_batch:end_batch]
@@ -144,10 +195,41 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
             total_loss_epoch += loss_batch
             total_correct_epoch += (y_pred == y_batch).sum().item()
 
+            y_prob_classes.append(y_prob_class.detach().cpu())
+
             # print("Loss batch:", loss_batch)
         avg_loss_epoch = total_loss_epoch / num_samples_train
-        avg_accuracy_epoch = total_correct_epoch / num_samples_train
-    return avg_loss_epoch, avg_accuracy_epoch
+        # avg_accuracy_epoch = total_correct_epoch / num_samples_train
+
+    y_prob_classes = np.vstack(y_prob_classes)
+    return avg_loss_epoch, y_prob_classes
+
+
+def salvar_modelo_e_resultados(
+    modelo_treinado: nn.Module, dict_metricas: dict[str, float], fold: int
+) -> None:
+    """ Salva os parâmetros do modelo e os resultados de
+    classificação para o fold.
+    """
+    pasta_resultados = f"resultados_{TIPO_ESPECTROGRAMA}"
+
+    os.makedirs(pasta_resultados, exist_ok=True)
+
+    nome_base = f"fold_{fold}_validacao"
+
+    caminho_arquivo_modelo = f"{pasta_resultados}/{nome_base}.pth"
+
+    torch.save(modelo_treinado.state_dict(), caminho_arquivo_modelo)
+    print(f"{caminho_arquivo_modelo} salvo com sucesso.")
+
+    caminho_arquivo_json = f"{pasta_resultados}/{nome_base}.json"
+
+    with open(caminho_arquivo_json, 'w') as f:
+
+        json.dump(dict_metricas, f, indent=4)
+
+    print(f"{caminho_arquivo_json} savo com sucesso.")
+
 
 def main():
     metadata = pd.read_csv(CAMINHO_SAIDA_METADADOS)
@@ -168,7 +250,7 @@ def main():
 
         X_val, y_val = carregar_dados_teste(metadata, fold_teste, lbl_encoder)
 
-        treinar_modelo(X_train, X_val, y_train, y_val)
+        treinar_modelo(X_train, X_val, y_train, y_val, fold_teste)
 
 
 if __name__ == "__main__":
