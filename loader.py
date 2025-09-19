@@ -49,6 +49,7 @@ def carregar_imagens(caminhos_arquivos: list[str], rotulos_metadados: NDArray
 
 def carregar_dados_treino(
     df_metadata: pd.DataFrame, folds_treino: list[int], lbl_encoder: LabelEncoder,
+    espectrograma: str
 ) -> tuple[NDArray, NDArray]:
     """ Função que lê todas as imagens de treino, seus respectivos rótulos e
     devolve ambos no formato NumPy.
@@ -58,6 +59,7 @@ def carregar_dados_treino(
             e outros metadados.
         folds_treino: lista de folds de treino (de 1 a 10).
         lbl_encoder: transformar palavras em números.
+        espectrograma: tipo de espectrograma usado (logmel, melspec etc)
 
     Returns:
         Tupla contendo os inputs (X_train) e os rótulos (y_train)
@@ -77,7 +79,7 @@ def carregar_dados_treino(
         df_fold = df_fold.iloc[shuffled_order]
 
         caminhos_audios_treino = [
-            f"{DIR_BASE_ESPECTROGRAMAS}/fold{fold_train}/{arquivo}"
+            f"{DIR_BASE_ESPECTROGRAMAS}/{espectrograma}/fold{fold_train}/{arquivo}"
             for arquivo in df_fold["spectrogram_name"]
         ]
 
@@ -97,7 +99,8 @@ def carregar_dados_treino(
     return X_train, y_train
 
 def carregar_dados_teste(
-    df_metadata: pd.DataFrame, fold_test: int, lbl_encoder: LabelEncoder
+    df_metadata: pd.DataFrame, fold_test: int, lbl_encoder: LabelEncoder,
+    espectrograma: str
 ) -> tuple[NDArray, NDArray]:
     """ Função que lê todas as imagens de teste, seus respectivos rótulos e
     devolve ambos no formato NumPy.
@@ -107,6 +110,7 @@ def carregar_dados_teste(
             e outros metadados.
         fold_test: fold de teste.
         lbl_encoder: transformar palavras em números.
+        espectrograma: tipo de espectrograma usado (logmel, melspec etc)
 
     Returns:
         X_test, y_test: Tupla contendo os inputs (X) e os rótulos (y)
@@ -124,7 +128,7 @@ def carregar_dados_teste(
     df_teste = df_teste.iloc[shuffled_order]
 
     caminhos_audios_teste = [
-        f"{DIR_BASE_ESPECTROGRAMAS}/fold{fold_test}/{arquivo}"
+        f"{DIR_BASE_ESPECTROGRAMAS}/{espectrograma}/fold{fold_test}/{arquivo}"
         for arquivo in df_teste["spectrogram_name"]]
 
     labels = df_teste["class"].values

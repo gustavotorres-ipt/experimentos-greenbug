@@ -1,6 +1,8 @@
 import os
+import sys
 import json
 import torch
+import argparse
 import pandas as pd
 import numpy as np
 from numpy.typing import NDArray
@@ -8,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 from torch import nn
 from model import ConvNet, ResNet101, EarlyStopping
 from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE
-from config import CAMINHO_SAIDA_METADADOS, NUM_CLASSES, EPOCHS, TIPO_ESPECTROGRAMA
+from config import CAMINHO_SAIDA_METADADOS, NUM_CLASSES, EPOCHS
 from loader import carregar_dados_treino, carregar_dados_teste
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
 
@@ -16,7 +18,7 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-def calc_metricas( y_real: NDArray, y_prob: NDArray) -> dict[str, float]:
+def calc_metricas( y_real: NDArray, y_prob: NDArray, epoca: int) -> dict[str, float]:
     """ Calcula métricas de acurácia, precisão, recall e F1.
 
     Args:
@@ -35,10 +37,11 @@ def calc_metricas( y_real: NDArray, y_prob: NDArray) -> dict[str, float]:
     f1 = f1_score(y_real, y_pred, average='macro', zero_division=0.0)
 
     return {
-        'accuracy': accuracy,
-        'precision': precision,
-        'recall': recall,
-        'f1': f1,
+        'epoca': epoca,
+        'accuracy': float(accuracy),
+        'precision': float(precision),
+        'recall': float(recall),
+        'f1': float(f1),
     }
 
 
@@ -65,12 +68,22 @@ def treinar_modelo(
 
     X_val, y_val = X_test, y_test
 
-    # dl_model = ConvNet(input_shape, NUM_CLASSES)
-    dl_model = ResNet101(NUM_CLASSES)
+    if args.model == "resnet101":
+        dl_model = ResNet101(NUM_CLASSES)
+
+    elif args.model == "convnet":
+        dl_model = ConvNet(input_shape, NUM_CLASSES)
+
+    else:
+        print("Erro: modelo inválido.")
+        sys.exit(1)
+
     dl_model.to(device)
 
+    progresso_metricas = []
+
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(dl_model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.AdamW(dl_model.parameters(), lr=LEARNING_RATE)
     early_stopping = EarlyStopping()
 
     print("Starting training...")
@@ -83,8 +96,8 @@ def treinar_modelo(
         avg_loss_val, y_prob_val = val_one_epoch(
             X_val, y_val, dl_model, criterion)
 
-        dict_metricas_train = calc_metricas(y_train, y_prob_train)
-        dict_metricas_val = calc_metricas(y_val, y_prob_val)
+        dict_metricas_train = calc_metricas(y_train, y_prob_train, epoch)
+        dict_metricas_val = calc_metricas(y_val, y_prob_val, epoch)
 
         accuracy_train = dict_metricas_train['accuracy']
         accuracy_val = dict_metricas_val['accuracy']
@@ -92,17 +105,26 @@ def treinar_modelo(
         print(f"Training loss: {avg_loss_train} / Validation loss: {avg_loss_val}")
         print(f"Training accuracy: {accuracy_train} / Validation accuracy: {accuracy_val}")
 
-        early_stopping(avg_loss_val, dl_model)
+        early_stopping(-accuracy_val, dl_model, epoch)
         if early_stopping.early_stop:
-            print("Early stopping")
+            print(f"Early stop na época {epoch}. Melhor época: {early_stopping.best_epoch}")
             break
 
+        progresso_metricas.append(
+            {"treino": dict_metricas_train, "validacao": dict_metricas_val,}
+        )
+
     early_stopping.load_best_model(dl_model)
+
     avg_loss_val, y_prob_val = val_one_epoch(
         X_val, y_val, dl_model, criterion)
-    dict_metricas_val = calc_metricas(y_val, y_prob_val)
+    melhores_metricas_val = calc_metricas(
+        y_val, y_prob_val, early_stopping.best_epoch)
 
-    salvar_modelo_e_resultados(dl_model, dict_metricas_val, fold_teste)
+    # accuracy_val = dict_metricas_val['accuracy']
+    print(melhores_metricas_val)
+    salvar_modelo(dl_model, fold_teste)
+    salvar_metricas(melhores_metricas_val, progresso_metricas, fold_teste)
 
     # _, avg_accuracy_test = val_one_epoch(
     #     X_test, y_test, dl_model, criterion)
@@ -127,6 +149,7 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
     # total_correct_epoch = 0
     total_loss_epoch = 0
     num_samples_train = X_train.shape[0]
+
     y_prob_classes = []
 
     for start_batch in range(0, num_samples_train, BATCH_SIZE):
@@ -205,13 +228,11 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
     return avg_loss_epoch, y_prob_classes
 
 
-def salvar_modelo_e_resultados(
-    modelo_treinado: nn.Module, dict_metricas: dict[str, float], fold: int
-) -> None:
+def salvar_modelo( modelo_treinado: nn.Module, fold: int) -> None:
     """ Salva os parâmetros do modelo e os resultados de
     classificação para o fold.
     """
-    pasta_resultados = f"resultados_{TIPO_ESPECTROGRAMA}"
+    pasta_resultados = f"resultados_{args.espectrograma}"
 
     os.makedirs(pasta_resultados, exist_ok=True)
 
@@ -222,13 +243,33 @@ def salvar_modelo_e_resultados(
     torch.save(modelo_treinado.state_dict(), caminho_arquivo_modelo)
     print(f"{caminho_arquivo_modelo} salvo com sucesso.")
 
-    caminho_arquivo_json = f"{pasta_resultados}/{nome_base}.json"
 
-    with open(caminho_arquivo_json, 'w') as f:
+def salvar_metricas(
+        melhores_metricas: dict[str, float],
+        progresso_metricas: list[dict],
+        fold: int):
+    pasta_resultados = f"resultados_{args.espectrograma}"
 
-        json.dump(dict_metricas, f, indent=4)
+    os.makedirs(pasta_resultados, exist_ok=True)
 
-    print(f"{caminho_arquivo_json} savo com sucesso.")
+    nome_base = f"fold_{fold}_validacao"
+
+    caminho_json_final = f"{pasta_resultados}/melhor_{nome_base}.json"
+
+    with open(caminho_json_final, 'w') as f:
+
+        json.dump(melhores_metricas, f, indent=4)
+
+    print(f"{caminho_json_final} salvo com sucesso.")
+
+    ############
+    caminho_json_evolucao = f"{pasta_resultados}/evolucao_{nome_base}.json"
+
+    with open(caminho_json_evolucao, 'w') as f:
+
+        json.dump(progresso_metricas, f, indent=4)
+
+    print(f"{caminho_json_evolucao} salvo com sucesso.")
 
 
 def main():
@@ -246,12 +287,24 @@ def main():
         folds_treino.remove(fold_teste)
 
         print("Carregando dados...")
-        X_train, y_train = carregar_dados_treino(metadata, folds_treino, lbl_encoder)
+        X_train, y_train = carregar_dados_treino(
+            metadata, folds_treino, lbl_encoder, args.espectrograma)
 
-        X_val, y_val = carregar_dados_teste(metadata, fold_teste, lbl_encoder)
+        X_val, y_val = carregar_dados_teste(
+            metadata, fold_teste, lbl_encoder, args.espectrograma)
 
         treinar_modelo(X_train, X_val, y_train, y_val, fold_teste)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-m", "--model", type=str, required=True,
+                        help = "Modelo de Deep learning usado")
+    parser.add_argument("-e", "--espectrograma", type=str, required=True,
+                        help = "Espectrograma usado")
+
+    # Read arguments from command line
+    args = parser.parse_args()
+
     main()

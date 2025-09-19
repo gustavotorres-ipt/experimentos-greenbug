@@ -1,7 +1,7 @@
 import os
 import librosa
 import numpy as np
-from config import TAM_IMAGENS, TIPO_ESPECTROGRAMA
+from config import TAM_IMAGENS
 from PIL import Image
 
 #--------------------------------------
@@ -48,8 +48,8 @@ def cortar_espectrograma(spectrogram, largura_janela, altura_janela):
     return spectrogram_slices
 
 
-def salvar_espectrogramas(audio_clips, audio_path, spectrogram_path):
-    gerar_espectrograma = FUNCOES_GERACAO_SPEC[TIPO_ESPECTROGRAMA]
+def salvar_espectrogramas(audio_clips, audio_path, spectrogram_path, espec_tipo):
+    gerar_espectrograma = FUNCOES_GERACAO_SPEC[espec_tipo]
 
     for i, audio_name in enumerate(audio_clips):
         y, sr = librosa.load( os.path.join(audio_path, audio_name) )
@@ -63,13 +63,13 @@ def salvar_espectrogramas(audio_clips, audio_path, spectrogram_path):
 
             im = Image.fromarray(mel_spec).convert("L")
 
-            dim = TAM_IMAGENS[TIPO_ESPECTROGRAMA]
+            dim = TAM_IMAGENS[espec_tipo]
             resized_img = im.resize((dim, dim))
             full_filename = fullpath + ".png"
             resized_img.save(full_filename)
 
             # mel_spec_slices = cortar_espectrograma(
-            #     mel_spec, TAM_IMAGENS[TIPO_ESPECTROGRAMA], TAM_IMAGENS[TIPO_ESPECTROGRAMA]
+            #     mel_spec, TAM_IMAGENS[espec_tipo], TAM_IMAGENS[espec_tipo]
             # )
             # # Salva o arquivo e começa o próximo
             # for j in range(len(mel_spec_slices)):

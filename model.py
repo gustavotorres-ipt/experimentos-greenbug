@@ -1,11 +1,10 @@
-import os
-import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
 from PIL import Image
 import numpy as np
+import copy
 
 
 class EarlyStopping:
@@ -17,7 +16,7 @@ class EarlyStopping:
         self.counter = 0
         self.best_model_state = None
 
-    def __call__(self, val_loss, model):
+    def __call__(self, val_loss, model, epoch):
         score = -val_loss
 
         if self.best_score is None:
@@ -29,7 +28,8 @@ class EarlyStopping:
                 self.early_stop = True
         else:
             self.best_score = score
-            self.best_model_state = model.state_dict()
+            self.best_model_state = copy.deepcopy(model.state_dict())
+            self.best_epoch = epoch
             self.counter = 0
 
     def load_best_model(self, model):

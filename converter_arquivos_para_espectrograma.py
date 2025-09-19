@@ -1,4 +1,5 @@
 import os
+import argparse
 import pandas as pd
 from funcoes_espectrogramas import salvar_espectrogramas
 from config import CAMINHO_SAIDA_METADADOS, TEMPO_AUDIO_MAXIMO, DIR_BASE_ESPECTROGRAMAS, N_FOLDS
@@ -26,43 +27,60 @@ def adicionar_folds(folds_audios, audios_names):
 
     return folds
 
-#--------------------------------------------------
-# Cria a pasta para salvar os espectrogramas
-os.makedirs(DIR_BASE_ESPECTROGRAMAS, exist_ok=True)
+def main():
+    #--------------------------------------------------
+    # Cria a pasta para salvar os espectrogramas
+    dir_espectrogramas = os.path.join(DIR_BASE_ESPECTROGRAMAS, args.espectrograma)
+    os.makedirs(dir_espectrogramas, exist_ok=True)
 
-#-------------------------------------------------
-metadata = pd.read_csv('./data/UrbanSound8K.csv')
+    #-------------------------------------------------
+    metadata = pd.read_csv('./data/UrbanSound8K.csv')
 
-metadata["duration"] = metadata["end"].values.astype(float) - metadata["start"].values.astype(float)
+    metadata["duration"] = metadata["end"].values.astype(float) - metadata["start"].values.astype(float)
 
-metadata = metadata.loc[metadata["duration"].values.astype(float) >= TEMPO_AUDIO_MAXIMO]
+    metadata = metadata.loc[metadata["duration"].values.astype(float) >= TEMPO_AUDIO_MAXIMO]
 
-#----------------------------------------------------
-# Dicionário contendo o fold correspondente aos áudios
-folds_audios = {}
+    #----------------------------------------------------
+    # Dicionário contendo o fold correspondente aos áudios
+    folds_audios = {}
 
-for i in range(1, N_FOLDS + 1):
-    audios_names = os.listdir(f"./data/fold{i}")
-    audios_names = filtrar_audios_curtos(audios_names, metadata["slice_file_name"].values)
+    for i in range(1, N_FOLDS + 1):
+        audios_names = os.listdir(f"./data/fold{i}")
+        audios_names = filtrar_audios_curtos(
+            audios_names, metadata["slice_file_name"].values)
 
-    folds_audios[f"fold{i}"] = audios_names
+        folds_audios[f"fold{i}"] = audios_names
 
-    # Gerar  espectrogramas para o fold, salvar em uma pasta data/spectrogramas/tipo_spec/foldx
-    dir_spectrograms = f"{DIR_BASE_ESPECTROGRAMAS}/fold{i}"
-    os.makedirs(dir_spectrograms, exist_ok=True)
+        # Gerar  espectrogramas para o fold, salvar em uma pasta data/spectrogramas/tipo_spec/foldx
+        dir_espectrogramas = f"{dir_espectrogramas}/fold{i}"
+        os.makedirs(dir_espectrogramas, exist_ok=True)
 
-    audio_path = f"./data/fold{i}"
+        audio_path = f"./data/fold{i}"
 
-    salvar_espectrogramas(audios_names, audio_path, dir_spectrograms)
+        salvar_espectrogramas(audios_names, audio_path,
+                              dir_espectrogramas, args.espectrograma)
 
-#----------------------------------------------------
-print("Adicionando os folds...")
+    #----------------------------------------------------
+    print("Adicionando os folds...")
 
-metadata["fold"] = adicionar_folds(folds_audios, metadata["slice_file_name"].values)
+    metadata["fold"] = adicionar_folds(
+        folds_audios, metadata["slice_file_name"].values)
 
-# Muda a extensão de arquivos de som para png
-metadata["spectrogram_name"] = [f"{audio[:-4]}.png" for audio in metadata["slice_file_name"].values]
+    # Muda a extensão de arquivos de som para png
+    metadata["spectrogram_name"] = [
+        f"{audio[:-4]}.png" for audio in metadata["slice_file_name"].values]
 
-# Salva os metadados atualizados
-metadata.to_csv(f"{CAMINHO_SAIDA_METADADOS}", index=False)
-print(f"{CAMINHO_SAIDA_METADADOS} salvo com sucesso.")
+    # Salva os metadados atualizados
+    metadata.to_csv(f"{CAMINHO_SAIDA_METADADOS}", index=False)
+    print(f"{CAMINHO_SAIDA_METADADOS} salvo com sucesso.")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-e", "--espectrograma", type=str, required=True,
+                        help = "Espectrograma usado")
+    # Read arguments from command line
+    args = parser.parse_args()
+
+    main()
