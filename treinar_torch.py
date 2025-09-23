@@ -232,7 +232,7 @@ def salvar_modelo( modelo_treinado: nn.Module, fold: int) -> None:
     """ Salva os parâmetros do modelo e os resultados de
     classificação para o fold.
     """
-    pasta_resultados = f"resultados_{args.espectrograma}"
+    pasta_resultados = f"resultados/{args.espectrograma}_{args.model}"
 
     os.makedirs(pasta_resultados, exist_ok=True)
 
@@ -248,7 +248,7 @@ def salvar_metricas(
         melhores_metricas: dict[str, float],
         progresso_metricas: list[dict],
         fold: int):
-    pasta_resultados = f"resultados_{args.espectrograma}"
+    pasta_resultados = f"resultados/{args.espectrograma}_{args.model}"
 
     os.makedirs(pasta_resultados, exist_ok=True)
 
