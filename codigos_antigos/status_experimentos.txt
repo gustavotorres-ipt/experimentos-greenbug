@@ -1,0 +1,38 @@
+-------------------
+-  Experimento 1  -
+-------------------
+500 serra / 241 moto / 250 carro
+80 treino, 20 teste
+15 épocas
+Random state = 42
+optimizer = adam
+
+Acurácia MelSpectrogram: 0.7638190954773869
+
+Acurácia Log: 0.7839195979899497
+
+-------------------
+-  Experimento 2  -
+-------------------
+500 serra / 241 moto / 250 carro
+80 treino, 20 teste
+15 épocas
+Random state = 42
+optimizer = RMSProp
+
+Acurácia MelSpectrogram: 0.7487437185929648
+
+Acurácia Log: 0.7236180904522613
+
+-------------------
+-  Experimento 3  -
+-------------------
+500 serra / 241 moto / 250 carro
+80 treino, 20 teste
+15 épocas
+Random state = 100
+optimizer = RMSProp
+
+Acurácia MelSpectrogram: 0.7939698492462312
+
+Acurácia Log: 0.7185929648241206
