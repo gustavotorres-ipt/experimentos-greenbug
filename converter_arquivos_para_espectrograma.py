@@ -2,7 +2,7 @@ import os
 import argparse
 import pandas as pd
 from funcoes_espectrogramas import salvar_espectrogramas
-from config import CAMINHO_SAIDA_METADADOS, TEMPO_AUDIO_MAXIMO, DIR_BASE_ESPECTROGRAMAS, N_FOLDS
+from config import CAMINHO_SAIDA_METADADOS, TEMPO_AUDIO_MAXIMO, DIR_BASE_ESPECTROGRAMAS, N_FOLDS, DIR_DATA
 
 #-------------------------------------------------
 def filtrar_audios_curtos(audios_names, valid_audios):
@@ -34,8 +34,8 @@ def main():
     os.makedirs(dir_espectrogramas, exist_ok=True)
 
     #-------------------------------------------------
-    metadata = pd.read_csv('./data/UrbanSound8K.csv')
-
+    metadata = pd.read_csv(os.path.join(DIR_DATA, 'UrbanSound8K.csv'))
+    
     metadata["duration"] = metadata["end"].values.astype(float) - metadata["start"].values.astype(float)
 
     metadata = metadata.loc[metadata["duration"].values.astype(float) >= TEMPO_AUDIO_MAXIMO]
@@ -51,11 +51,11 @@ def main():
 
         folds_audios[f"fold{i}"] = audios_names
 
-        # Gerar  espectrogramas para o fold, salvar em uma pasta data/spectrogramas/tipo_spec/foldx
+        # Gerar  espectrogramas para o fold, salvar em uma pasta dir_data/spectrogramas/tipo_spec/foldx
         dir_espectrogramas = f"{dir_espectrogramas}/fold{i}"
         os.makedirs(dir_espectrogramas, exist_ok=True)
 
-        audio_path = f"./data/fold{i}"
+        audio_path = os.path.join(DIR_DATA, f"fold{i}")
 
         salvar_espectrogramas(audios_names, audio_path,
                               dir_espectrogramas, args.espectrograma)
