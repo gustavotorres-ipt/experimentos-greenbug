@@ -9,7 +9,7 @@ import numpy as np
 #import skimage.io as io
 import librosa.display
 from tensorflow.python.ops.gen_nn_ops import leaky_relu
-from config import CAMINHO_SAIDA_METADADOS, DIR_BASE_ESPECTROGRAMAS, TAM_IMAGENS, TIPO_ESPECTROGRAMA
+from config import CAMINHO_METADADOS, DIR_BASE_ESPECTROGRAMAS, TAM_IMAGENS, TIPO_ESPECTROGRAMA
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score
 from tqdm import tqdm
 from tensorflow.keras.losses import CategoricalCrossentropy
@@ -21,8 +21,6 @@ from sklearn.preprocessing import OneHotEncoder
 from csnn import CSNNModel
 
 #----------------------------------------
-# TODO gerar o resto dos espectrogramas
-
 N_EPOCHS = 100
 BATCH_SIZE = 4
 N_FOLDS = 10
@@ -257,7 +255,7 @@ def redimensionar_imagens(imagens, size, rgb_transform=False):
 
     return np.array(resized_imgs)
 #---------------------------------
-metadata = pd.read_csv(CAMINHO_SAIDA_METADADOS)
+metadata = pd.read_csv(CAMINHO_METADADOS)
 
 # Folds 1 to 10
 for fold_val in range(1, N_FOLDS+1):
