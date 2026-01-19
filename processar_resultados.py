@@ -110,6 +110,7 @@ def main():
     pastas_experimentos = [pasta for pasta in conteudo_pasta
                            if os.path.isdir(pasta)]
     gerar_curvas_aprendizado(pastas_experimentos)
+    # gerar_matrizes_confusao
     plotar_melhores_resultados(pastas_experimentos)
 
 
