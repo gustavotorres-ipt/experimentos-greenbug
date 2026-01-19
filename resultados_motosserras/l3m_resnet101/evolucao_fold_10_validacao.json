@@ -1,0 +1,1362 @@
+[
+    {
+        "treino": {
+            "epoca": 0,
+            "accuracy": 0.3032178217821782,
+            "precision": 0.20477860069335013,
+            "recall": 0.11376669420349717,
+            "f1": 0.13466775086094596
+        },
+        "validacao": {
+            "epoca": 0,
+            "accuracy": 0.3146067415730337,
+            "precision": 0.2951552795031056,
+            "recall": 0.1896551724137931,
+            "f1": 0.21408018867924525
+        }
+    },
+    {
+        "treino": {
+            "epoca": 1,
+            "accuracy": 0.7933168316831684,
+            "precision": 0.6088326839386013,
+            "recall": 0.5949538758088944,
+            "f1": 0.5941500227586538
+        },
+        "validacao": {
+            "epoca": 1,
+            "accuracy": 0.48314606741573035,
+            "precision": 0.563095238095238,
+            "recall": 0.48390804597701154,
+            "f1": 0.49134199134199136
+        }
+    },
+    {
+        "treino": {
+            "epoca": 2,
+            "accuracy": 0.9158415841584159,
+            "precision": 0.9178292270641034,
+            "recall": 0.915806140713204,
+            "f1": 0.9156859177819728
+        },
+        "validacao": {
+            "epoca": 2,
+            "accuracy": 0.6067415730337079,
+            "precision": 0.6533333333333333,
+            "recall": 0.6053639846743294,
+            "f1": 0.6110377043710377
+        }
+    },
+    {
+        "treino": {
+            "epoca": 3,
+            "accuracy": 0.9801980198019802,
+            "precision": 0.9805194774143885,
+            "recall": 0.9801780715039698,
+            "f1": 0.9802089702406604
+        },
+        "validacao": {
+            "epoca": 3,
+            "accuracy": 0.6292134831460674,
+            "precision": 0.6632453567937439,
+            "recall": 0.6291187739463601,
+            "f1": 0.6382284382284382
+        }
+    },
+    {
+        "treino": {
+            "epoca": 4,
+            "accuracy": 0.9962871287128713,
+            "precision": 0.9963235294117648,
+            "recall": 0.9962871173527926,
+            "f1": 0.996289360880125
+        },
+        "validacao": {
+            "epoca": 4,
+            "accuracy": 0.5955056179775281,
+            "precision": 0.6318591318591319,
+            "recall": 0.5946360153256705,
+            "f1": 0.6050062594459256
+        }
+    },
+    {
+        "treino": {
+            "epoca": 5,
+            "accuracy": 0.9975247524752475,
+            "precision": 0.997530864197531,
+            "recall": 0.997526274725779,
+            "f1": 0.9975262704445997
+        },
+        "validacao": {
+            "epoca": 5,
+            "accuracy": 0.6179775280898876,
+            "precision": 0.625836913193235,
+            "recall": 0.6168582375478927,
+            "f1": 0.6201999251001066
+        }
+    },
+    {
+        "treino": {
+            "epoca": 6,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 6,
+            "accuracy": 0.6179775280898876,
+            "precision": 0.6144672531769306,
+            "recall": 0.6168582375478927,
+            "f1": 0.6140168271315812
+        }
+    },
+    {
+        "treino": {
+            "epoca": 7,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 7,
+            "accuracy": 0.6404494382022472,
+            "precision": 0.6439974457215837,
+            "recall": 0.6386973180076628,
+            "f1": 0.6380078366007371
+        }
+    },
+    {
+        "treino": {
+            "epoca": 8,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 8,
+            "accuracy": 0.6404494382022472,
+            "precision": 0.6406865691578174,
+            "recall": 0.6386973180076628,
+            "f1": 0.6359815048339638
+        }
+    },
+    {
+        "treino": {
+            "epoca": 9,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 9,
+            "accuracy": 0.6404494382022472,
+            "precision": 0.6406865691578174,
+            "recall": 0.6386973180076628,
+            "f1": 0.6359815048339638
+        }
+    },
+    {
+        "treino": {
+            "epoca": 10,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 10,
+            "accuracy": 0.651685393258427,
+            "precision": 0.6525974025974026,
+            "recall": 0.6498084291187739,
+            "f1": 0.6461992572049499
+        }
+    },
+    {
+        "treino": {
+            "epoca": 11,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 11,
+            "accuracy": 0.651685393258427,
+            "precision": 0.6525974025974026,
+            "recall": 0.6498084291187739,
+            "f1": 0.6461992572049499
+        }
+    },
+    {
+        "treino": {
+            "epoca": 12,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 12,
+            "accuracy": 0.651685393258427,
+            "precision": 0.6525974025974026,
+            "recall": 0.6498084291187739,
+            "f1": 0.6461992572049499
+        }
+    },
+    {
+        "treino": {
+            "epoca": 13,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 13,
+            "accuracy": 0.651685393258427,
+            "precision": 0.6553709134354296,
+            "recall": 0.6498084291187739,
+            "f1": 0.6473218199351276
+        }
+    },
+    {
+        "treino": {
+            "epoca": 14,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 14,
+            "accuracy": 0.651685393258427,
+            "precision": 0.6553709134354296,
+            "recall": 0.6498084291187739,
+            "f1": 0.6473218199351276
+        }
+    },
+    {
+        "treino": {
+            "epoca": 15,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 15,
+            "accuracy": 0.651685393258427,
+            "precision": 0.6553709134354296,
+            "recall": 0.6498084291187739,
+            "f1": 0.6473218199351276
+        }
+    },
+    {
+        "treino": {
+            "epoca": 16,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 16,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 17,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 17,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 18,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 18,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 19,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 19,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 20,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 20,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 21,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 21,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 22,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 22,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 23,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 23,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 24,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 24,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 25,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 25,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 26,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 26,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 27,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 27,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 28,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 28,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 29,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 29,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 30,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 30,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 31,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 31,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 32,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 32,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 33,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 33,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 34,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 34,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 35,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 35,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 36,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 36,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 37,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 37,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 38,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 38,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 39,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 39,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 40,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 40,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 41,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 41,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 42,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 42,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 43,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 43,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 44,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 44,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 45,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 45,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 46,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 46,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 47,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 47,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 48,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 48,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 49,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 49,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 50,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 50,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 51,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 51,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 52,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 52,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 53,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 53,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 54,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 54,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 55,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 55,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 56,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 56,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 57,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 57,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 58,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 58,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 59,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 59,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 60,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 60,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 61,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 61,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 62,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 62,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 63,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 63,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 64,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 64,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 65,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 65,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 66,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 66,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6694759275404435,
+            "recall": 0.6609195402298851,
+            "f1": 0.6579169725144768
+        }
+    },
+    {
+        "treino": {
+            "epoca": 67,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 67,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 68,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 68,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 69,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 69,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 70,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 70,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 71,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 71,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 72,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 72,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 73,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 73,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 74,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 74,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 75,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 75,
+            "accuracy": 0.6741573033707865,
+            "precision": 0.6797816878462039,
+            "recall": 0.6724137931034484,
+            "f1": 0.6704947254609742
+        }
+    },
+    {
+        "treino": {
+            "epoca": 76,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 76,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 77,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 77,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 78,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 78,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 79,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 79,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 80,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 80,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 81,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 81,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 82,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 82,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 83,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 83,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    },
+    {
+        "treino": {
+            "epoca": 84,
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+        },
+        "validacao": {
+            "epoca": 84,
+            "accuracy": 0.6629213483146067,
+            "precision": 0.6659320109530488,
+            "recall": 0.6613026819923372,
+            "f1": 0.6597309794031105
+        }
+    }
+]
