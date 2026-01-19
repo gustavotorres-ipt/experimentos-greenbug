@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 from sklearn.preprocessing import LabelEncoder
 from torch import nn
 from model import ConvNet, ResNet101, EarlyStopping
-from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE
+from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE, TAM_IMAGENS
 from config import CAMINHO_METADADOS, NUM_CLASSES, EPOCHS, PASTA_RESULTADOS
 from loader import carregar_dados_treino, carregar_dados_teste
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
@@ -297,14 +297,20 @@ def main():
 
 
 if __name__ == "__main__":
+    possiveis_espectrogramas = list(TAM_IMAGENS.keys())
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-m", "--model", type=str, required=True,
                         help = "Modelo de Deep learning usado. Opções: resnet101 / convnet")
     parser.add_argument("-e", "--espectrograma", type=str, required=True,
-                        help = "Espectrograma usado. Opções: melspec / logmel / l2m / l3m")
+                        help = f"Espectrograma usado. Opções: {possiveis_espectrogramas}")
 
     # Read arguments from command line
     args = parser.parse_args()
+    if args.espectrograma not in possiveis_espectrogramas:
+        print("Erro: tipo de espectrograma inválido.",
+              f"Válidos {possiveis_espectrogramas}")
+        sys.exit(1)
 
     main()

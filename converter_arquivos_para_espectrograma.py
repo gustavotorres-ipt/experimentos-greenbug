@@ -1,9 +1,10 @@
 import os
+import sys
 import argparse
 import pandas as pd
 from funcoes_espectrogramas import salvar_espectrogramas
 from config import CAMINHO_METADADOS, TEMPO_AUDIO_MAXIMO, DIR_BASE_ESPECTROGRAMAS, \
-    N_FOLDS, DIR_DATA
+    N_FOLDS, DIR_DATA, TAM_IMAGENS
 
 
 COL_ARQUIVOS_SONS = "slice_file_name"
@@ -82,11 +83,18 @@ def main():
 
 
 if __name__ == "__main__":
+    possiveis_espectrogramas = list(TAM_IMAGENS.keys())
+
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-e", "--espectrograma", type=str, required=True,
-                        help = "Espectrograma usado")
+    parser.add_argument(
+        "-e", "--espectrograma", type=str, required=True,
+        help = f"Espectrograma usado: Opções {possiveis_espectrogramas}")
     # Read arguments from command line
     args = parser.parse_args()
+    if args.espectrograma not in possiveis_espectrogramas:
+        print("Erro: tipo de espectrograma inválido.",
+              f"Válidos {possiveis_espectrogramas}")
+        sys.exit(1)
 
     main()
