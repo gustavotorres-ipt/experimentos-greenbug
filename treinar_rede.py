@@ -5,17 +5,33 @@ import torch
 import argparse
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from numpy.typing import NDArray
 from sklearn.preprocessing import LabelEncoder
 from torch import nn
-from model import ConvNet, ResNet101, EarlyStopping
+from model import ConvNet, ResNet101, ResNet18, EarlyStopping
 from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE, TAM_IMAGENS
 from config import CAMINHO_METADADOS, NUM_CLASSES, EPOCHS, PASTA_RESULTADOS
 from loader import carregar_dados_treino, carregar_dados_teste
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
-
+from augmentation import add_gaussian_noise, augment_batch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
+def visualizar_imagem(img_tensor):
+    # Remove batch dimension: (3, 224, 224)
+    img = img_tensor[0]
+
+    # Convert from (C, H, W) to (H, W, C) for matplotlib
+    img = img.permute(1, 2, 0).detach().cpu().numpy()
+
+    # If the image was normalized (0-1 or with mean/std), clip values
+    img = np.clip(img, 0, 1)
+
+    # Plot
+    plt.imshow(img)
+    plt.axis('off')
+    plt.show()
 
 
 def calc_metricas( y_real: NDArray, y_prob: NDArray, epoca: int) -> dict[str, float]:
@@ -74,6 +90,9 @@ def treinar_modelo(
     elif args.model == "convnet":
         dl_model = ConvNet(input_shape, NUM_CLASSES)
 
+    elif args.model == "resnet18":
+        dl_model = ResNet18(NUM_CLASSES)
+
     else:
         print("Erro: modelo inválido.")
         sys.exit(1)
@@ -83,7 +102,7 @@ def treinar_modelo(
     progresso_metricas = []
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.AdamW(dl_model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.Adam(dl_model.parameters(), lr=LEARNING_RATE)
     early_stopping = EarlyStopping()
 
     print("Starting training...")
@@ -160,6 +179,9 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
         y_batch = y_train[start_batch:end_batch]
 
         X_batch = torch.asarray(X_batch).to(device)
+        X_batch = augment_batch(X_batch)
+        # visualizar_imagem(X_batch)
+        # breakpoint()
         y_batch = torch.asarray(y_batch).to(device)
 
         y_prob_class = dl_model(X_batch)
@@ -206,6 +228,10 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
             y_batch = y_val[start_batch:end_batch]
 
             X_batch = torch.asarray(X_batch).to(device)
+            X_batch = augment_batch(X_batch)
+            # visualizar_imagem(X_batch)
+            # breakpoint()
+
             y_batch = torch.asarray(y_batch).to(device)
 
             y_prob_class = dl_model(X_batch)

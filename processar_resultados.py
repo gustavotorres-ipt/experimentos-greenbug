@@ -4,15 +4,40 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE, TAM_IMAGENS
-from config import CAMINHO_METADADOS, NUM_CLASSES, EPOCHS, PASTA_RESULTADOS
+from config import N_FOLDS, PASTA_RESULTADOS
 
 
 CLF_METRICAS = ['Accuracy', 'Precision', 'Recall', 'F1-score']
 
 
-def gerar_curvas_aprendizado(caminho_pasta: str):
-    pass
+def gerar_curvas_aprendizado(caminhos_experimentos: list[str]):
+    # 'curva_evolucao_fold'
+
+    for caminho in caminhos_experimentos:
+        for f in range(1, N_FOLDS+1):
+            caminho_resultado_fold = os.path.join(
+                caminho, f'evolucao_fold_{f}_validacao.json'
+            )
+
+            f = open(caminho_resultado_fold)
+            results_fold = json.load(f)
+
+            n_epocas = len(results_fold)
+
+            valores_val = [ results_fold[i]['validacao']['accuracy']
+                           for i in range(n_epocas) ]
+
+            valores_treino = [ results_fold[i]['treino']['accuracy']
+                              for i in range(n_epocas) ]
+
+            plt.plot(valores_treino, alpha=0.4)
+            plt.plot(valores_val, alpha=0.4)
+        plt.show()
+        breakpoint()
+
+    # plt.xlabel("Epoch")
+    # plt.ylabel("Validation Loss")
+    # plt.title("Learning Curves Across Folds")
 
 
 def calcular_metricas_medias(caminho_pasta: str) -> tuple[dict, dict]:
@@ -84,6 +109,7 @@ def main():
                       for pasta in os.listdir(PASTA_RESULTADOS)]
     pastas_experimentos = [pasta for pasta in conteudo_pasta
                            if os.path.isdir(pasta)]
+    gerar_curvas_aprendizado(pastas_experimentos)
     plotar_melhores_resultados(pastas_experimentos)
 
 

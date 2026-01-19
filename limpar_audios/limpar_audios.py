@@ -19,7 +19,7 @@ CAMINHO_AUDIOS_LIMPOS = "data_clean_audioset"
 CAMINHO_WAVEFORMS = "waveforms_audioset"
 TIPOS_AUDIOS = ["carros", "motocicletas", "motosserras"]
 
-N_MAX_ARQUIVOS = 300
+N_MAX_ARQUIVOS = 641
 SAMPLE_RATE = 22050
 
 
@@ -118,7 +118,8 @@ def main():
         random.shuffle(arquivos_audio)
                                     
         arquivos_audio = [
-            arquivo for arquivo in arquivos_audio if ".~1~" not in arquivo
+            arquivo for arquivo in arquivos_audio
+            if ".~1~" not in arquivo and ".webm" not in arquivo
         ][:N_MAX_ARQUIVOS]
 
         for arquivo in tqdm(arquivos_audio):
