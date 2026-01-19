@@ -2,10 +2,9 @@ __pycache__/
 *.wmv
 *.wav
 *.png
-*.pth
 *.pt
+*.pth
 *.h5
 *.zip
 *.vim
 *.mp3
-fold_*/
