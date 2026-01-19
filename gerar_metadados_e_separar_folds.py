@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from config import CAMINHO_METADADOS, N_FOLDS, DIR_DATA
 
-N_SAMPLES_CLASS = 110
+# N_SAMPLES_CLASS = 300
 
 
 def remove_invalid_files(paths_files):
@@ -23,10 +23,9 @@ def copy_files_folds(paths_files: list[str], classname: str):
         # Utilizado para calcular o número de amostras corretas no fold.
         # Serve para evitar que classes com menos amostras fiquem com
         # menos folds.
-        n_files = min(N_SAMPLES_CLASS // N_FOLDS,
-                      len(paths_files) // N_FOLDS)
+        n_files_fold = len(paths_files) // N_FOLDS
 
-        files_fold = paths_files[(fold-1) * n_files : n_files * fold]
+        files_fold = paths_files[(fold-1) * n_files_fold : n_files_fold * fold]
 
         fold_path = os.path.join(DIR_DATA, f'fold{fold}')
         os.makedirs(fold_path, exist_ok=True)
