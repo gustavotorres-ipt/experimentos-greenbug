@@ -1,14 +1,14 @@
 import os
+import sys
 import re
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
-import torch
 from model import ConvNet
 from numpy.typing import NDArray
 from PIL import Image
-from config import N_FOLDS, DIR_BASE_ESPECTROGRAMAS
-from tqdm import tqdm
+from config import DIR_BASE_ESPECTROGRAMAS, NUM_CLASSES
+from model import ConvNet, ResNet101, ResNet18
 
 
 def carregar_imagens(caminhos_arquivos: list[str], rotulos_metadados: NDArray
@@ -139,3 +139,21 @@ def carregar_dados_teste(
     # Normalizar os dados
     X_test = X_test / 255
     return X_test, y_test
+
+
+def carregar_modelo(model_name, input_shape):
+    dl_model = None
+    if model_name == "resnet101":
+        dl_model = ResNet101(NUM_CLASSES)
+
+    elif model_name == "convnet":
+        dl_model = ConvNet(input_shape, NUM_CLASSES)
+
+    elif model_name == "resnet18":
+        dl_model = ResNet18(NUM_CLASSES)
+
+    else:
+        print("Erro: modelo inválido.")
+        sys.exit(1)
+
+    return dl_model

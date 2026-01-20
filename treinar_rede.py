@@ -12,7 +12,7 @@ from torch import nn
 from model import ConvNet, ResNet101, ResNet18, EarlyStopping
 from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE, TAM_IMAGENS
 from config import CAMINHO_METADADOS, NUM_CLASSES, EPOCHS, PASTA_RESULTADOS
-from loader import carregar_dados_treino, carregar_dados_teste
+from loader import carregar_dados_treino, carregar_dados_teste, carregar_modelo
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
 from augmentation import add_gaussian_noise, augment_batch
 
@@ -84,19 +84,7 @@ def treinar_modelo(
 
     X_val, y_val = X_test, y_test
 
-    if args.model == "resnet101":
-        dl_model = ResNet101(NUM_CLASSES)
-
-    elif args.model == "convnet":
-        dl_model = ConvNet(input_shape, NUM_CLASSES)
-
-    elif args.model == "resnet18":
-        dl_model = ResNet18(NUM_CLASSES)
-
-    else:
-        print("Erro: modelo inválido.")
-        sys.exit(1)
-
+    dl_model = carregar_modelo(args.model, input_shape)
     dl_model.to(device)
 
     progresso_metricas = []

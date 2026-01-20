@@ -23,6 +23,8 @@ def gerar_l3_mel_spec(y, sr):
     S_2linhas_dB =  (librosa.power_to_db(S_linha_dB, ref=np.max) + 60) / 10
     return S_2linhas_dB
 
+# Adicionar os 
+
 
 FUNCOES_GERACAO_SPEC = {"melspec": gerar_mel_spec,
                         "logmel": gerar_log_mel_spec,

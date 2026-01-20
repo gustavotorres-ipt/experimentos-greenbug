@@ -8,7 +8,7 @@ import copy
 
 
 class EarlyStopping:
-    def __init__(self, patience=10, delta=0):
+    def __init__(self, patience=10, delta=0.001):
         self.patience = patience
         self.delta = delta
         self.best_score = None
@@ -46,7 +46,8 @@ class ResNet101(nn.Module):
             self.resnet101.fc.in_features, num_classes)
 
     def forward(self, x):
-        return self.resnet101(x)
+        x = self.resnet101(x)
+        return F.softmax(x, dim=1)  # Assuming classification task
 
 class ResNet18(nn.Module):
 
@@ -58,7 +59,8 @@ class ResNet18(nn.Module):
             self.resnet18.fc.in_features, num_classes)
 
     def forward(self, x):
-        return self.resnet18(x)
+        x = self.resnet18(x)
+        return F.softmax(x, dim=1)  # Assuming classification task
 
 
 class ConvNet(nn.Module):
@@ -137,7 +139,7 @@ class ConvNet(nn.Module):
         x = self.relu5(x)
 
         x = self.fc3(x)
-        x = F.softmax(x, dim=1)  # Assuming classification task
+        # x = F.softmax(x, dim=1)  # Assuming classification task
 
         return x
 
