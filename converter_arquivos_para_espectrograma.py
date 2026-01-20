@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 import argparse
 import pandas as pd
@@ -38,6 +39,8 @@ def main():
     #--------------------------------------------------
     # Cria a pasta para salvar os espectrogramas
     dir_espectrogramas = os.path.join(DIR_BASE_ESPECTROGRAMAS, args.espectrograma)
+
+    shutil.rmtree(dir_espectrogramas, ignore_errors=True)
     os.makedirs(dir_espectrogramas, exist_ok=True)
 
     #-------------------------------------------------

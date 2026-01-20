@@ -12,7 +12,7 @@ TAM_IMAGENS = {"melspec": 128, "logmel": 128, "l2m": 128, "l3m": 128}
 
 TEMPO_AUDIO_MAXIMO = 2.56 #segundos
 
-NUM_CLASSES = 10
+NUM_CLASSES = 3
 
 CAMINHO_METADADOS = os.path.join("metadata_motosserras", "informacoes_audios.csv")
 # CAMINHO_ARQUIVO_ENTRADA = os.path.join("metadata_motosserras", "motosserras_carros_motos.csv")

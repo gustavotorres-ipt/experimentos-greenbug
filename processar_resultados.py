@@ -28,6 +28,7 @@ def gerar_matrizes_confusao(caminhos_experimentos: list[str]):
             os.path.split(caminho)[-1].split('_'))
 
         labels_pred, labels_reais = [], []
+
         for f in range(1, N_FOLDS+1):
             X_val, y_val = carregar_dados_teste(
                 metadata, f, lbl_encoder, espectrograma)
