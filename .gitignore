@@ -1,10 +1,10 @@
 __pycache__/
 *.wmv
 *.wav
-*.png
 *.pt
 *.pth
 *.h5
 *.zip
 *.vim
 *.mp3
+spectrograms/
