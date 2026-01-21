@@ -12,12 +12,12 @@ TAM_IMAGENS = {"melspec": 128, "logmel": 128, "l2m": 128, "l3m": 128}
 
 TEMPO_AUDIO_MAXIMO = 2.56 #segundos
 
-NUM_CLASSES = 10
+NUM_CLASSES = 3
 
-CAMINHO_METADADOS = os.path.join("metadata_urban_sounds", "informacoes_audios.csv")
-# CAMINHO_ARQUIVO_ENTRADA = os.path.join("metadata_urban_sounds", "urban_sounds_carros_motos.csv")
+CAMINHO_METADADOS = os.path.join("metadata_motosserras", "informacoes_audios.csv")
+# CAMINHO_ARQUIVO_ENTRADA = os.path.join("metadata_motosserras", "motosserras_carros_motos.csv")
 
-PASTA_RESULTADOS = "resultados_urban_sounds"
+PASTA_RESULTADOS = "resultados_motosserras"
 
-DIR_DATA = 'data_urban_sounds'
+DIR_DATA = 'data_motosserras'
 DIR_BASE_ESPECTROGRAMAS = os.path.join(DIR_DATA, "spectrograms")
