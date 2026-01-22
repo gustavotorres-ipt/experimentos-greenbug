@@ -55,9 +55,19 @@ def gerar_matrizes_confusao(caminhos_experimentos: list[str]):
         labels_reais = np.hstack(labels_reais)
         labels_pred = np.hstack(labels_pred)
 
-        cm = confusion_matrix(labels_reais, labels_pred)
-        sns.heatmap(cm, annot=True, fmt="d", xticklabels=classes_possiveis,
-                    yticklabels=classes_possiveis, cmap="Blues")
+        cm = confusion_matrix(labels_reais, labels_pred, normalize='true')
+
+        if PASTA_RESULTADOS == 'resultados_urban_sounds':
+            plt.figure(figsize=(11, 9))
+            rotation = 30
+        else:
+            rotation = 0
+        plt.tight_layout()
+        ax = sns.heatmap(
+            cm, annot=True, xticklabels=classes_possiveis,
+            yticklabels=classes_possiveis, cmap="Blues", vmin=0.0, vmax=1.0,
+        )
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=rotation,)
         plt.xlabel("Predicted label")
         plt.ylabel("True label")
         plt.title(f"Confusion matrix for {modelo} - {espectrograma} spectrogram")
