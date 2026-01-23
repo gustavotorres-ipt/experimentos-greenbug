@@ -316,7 +316,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-m", "--model", type=str, required=True,
-                        help = "Modelo de Deep learning usado. Opções: resnet101 / convnet")
+                        help = "Modelo de Deep learning usado. Opções: resnet18 / resnet101 / convnet")
     parser.add_argument("-e", "--espectrograma", type=str, required=True,
                         help = f"Espectrograma usado. Opções: {possiveis_espectrogramas}")
 
