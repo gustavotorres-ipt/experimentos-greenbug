@@ -10,11 +10,25 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from config import N_FOLDS, PASTA_RESULTADOS, CAMINHO_METADADOS, BATCH_SIZE
 from loader import carregar_modelo, carregar_dados_teste
 from augmentation import augment_batch
+from PIL import Image, ImageOps
 
 
 CLF_METRICAS = ['Accuracy', 'Precision', 'Recall', 'F1-score']
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
+
+def aparar_area_branca(caminho_imagem):
+    # Open the image
+    image = Image.open(caminho_imagem)
+
+    inverted_image = ImageOps.invert(image.convert('RGB'))
+    bbox = inverted_image.getbbox()
+
+    if bbox:
+        # Crop the original image to the bounding box
+        trimmed_image = image.crop(bbox)
+        trimmed_image.save(caminho_imagem)
 
 
 def gerar_matrizes_confusao(caminhos_experimentos: list[str]):
@@ -66,15 +80,17 @@ def gerar_matrizes_confusao(caminhos_experimentos: list[str]):
         ax = sns.heatmap(
             cm, annot=True, xticklabels=classes_possiveis,
             yticklabels=classes_possiveis, cmap="Blues", vmin=0.0, vmax=1.0,
+            fmt=".2f", annot_kws={"size": 16}, 
         )
         ax.set_xticklabels(ax.get_xticklabels(), rotation=rotation,)
         plt.xlabel("Predicted label")
         plt.ylabel("True label")
-        plt.title(f"Confusion matrix for {modelo} - {espectrograma} spectrogram")
+        # plt.title(f"Confusion matrix for {modelo} - {espectrograma} spectrogram")
         caminho_salvar = os.path.join(
             PASTA_RESULTADOS, f'{espectrograma}_{modelo}_matriz_confusao.png')
         plt.savefig(caminho_salvar)
         plt.clf()
+        aparar_area_branca(caminho_salvar)
 
         print(caminho_salvar, "salvo.")
 
