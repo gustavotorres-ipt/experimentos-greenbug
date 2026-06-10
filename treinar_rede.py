@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 from numpy.typing import NDArray
 from sklearn.preprocessing import LabelEncoder
 from torch import nn
-from model import ConvNet, ResNet101, ResNet18, EarlyStopping
+from model import EarlyStopping
 from config import LEARNING_RATE, N_FOLDS, BATCH_SIZE, TAM_IMAGENS
-from config import CAMINHO_METADADOS, NUM_CLASSES, EPOCHS, PASTA_RESULTADOS
+from config import CAMINHO_METADADOS, EPOCHS, PASTA_RESULTADOS
 from loader import carregar_dados_treino, carregar_dados_teste, carregar_modelo
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
-from augmentation import add_gaussian_noise, augment_batch
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from augmentation import augment_batch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -169,7 +169,6 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
         X_batch = torch.asarray(X_batch).to(device)
         X_batch = augment_batch(X_batch)
         # visualizar_imagem(X_batch)
-        # breakpoint()
         y_batch = torch.asarray(y_batch).to(device)
 
         y_prob_class = dl_model(X_batch)
@@ -218,7 +217,6 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
             X_batch = torch.asarray(X_batch).to(device)
             X_batch = augment_batch(X_batch)
             # visualizar_imagem(X_batch)
-            # breakpoint()
 
             y_batch = torch.asarray(y_batch).to(device)
 

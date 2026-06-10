@@ -118,7 +118,6 @@ def gerar_curvas_aprendizado(caminhos_experimentos: list[str]):
             plt.plot(valores_treino, alpha=0.4)
             plt.plot(valores_val, alpha=0.4)
         plt.show()
-        breakpoint()
 
     # plt.xlabel("Epoch")
     # plt.ylabel("Validation Loss")

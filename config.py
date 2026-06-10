@@ -9,7 +9,7 @@ N_FOLDS = 10
 # TIPO_ESPECTROGRAMA = "logmel"
 
 TAM_IMAGENS = {"melspec": 128, "logmel": 128, "l2m": 128, "l3m": 128,
-               "cochleo": 128,}
+               "cochleagram": 128, "lm-cochlea": 128,}
 
 TEMPO_AUDIO_MAXIMO = 2.56 #segundos
 

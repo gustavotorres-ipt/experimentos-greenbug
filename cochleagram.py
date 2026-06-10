@@ -8,7 +8,7 @@ import pycochleagram.erbfilter as erb
 from PIL import Image
 
 
-def calc_cochleogram(y, sr):
+def calc_cochleagram(y, sr):
 
     hi_lim = sr//2
     low_lim = 1
@@ -43,7 +43,7 @@ def main():
     print(selected_file)
 
     y, sr = librosa.load(selected_file)
-    calc_cochleogram(y, sr)
+    calc_cochleagram(y, sr)
 
 # librosa.display.specshow(res, sr=sr, x_axis="time")
 # breakpoint()

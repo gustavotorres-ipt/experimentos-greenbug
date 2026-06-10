@@ -26,7 +26,7 @@ def gerar_l3_mel_spec(y, sr):
     S_2linhas_dB =  (librosa.power_to_db(S_linha_dB, ref=np.max) + 60) / 10
     return S_2linhas_dB
 
-def gerar_cochleogram(y, sr):
+def gerar_cochleagram(y, sr):
     hi_lim = sr//2
     low_lim = 1
     n_filters = int(np.floor(
@@ -42,23 +42,31 @@ def gerar_cochleogram(y, sr):
         sample_factor = 1,
         nonlinearity='db'
     )
-    spec = cv2.resize(human_co, dsize=(128, 128),
-                      interpolation=cv2.INTER_CUBIC)
-    return spec
-    # spec_norm = 255 * (spec.max() - spec) / (spec.max() - spec.min())
+    return human_co
 
 
-def gerar_comb(y, sr):
-    pass
+def gerar_logmel_cochle(y, sr):
+    coc_spec = gerar_cochleagram(y, sr)
+    logmel_spec = gerar_log_mel_spec(y, sr)
 
-# Adicionar os 
+    coc_spec = cv2.resize(
+        coc_spec, dsize=logmel_spec.T.shape,
+        interpolation=cv2.INTER_CUBIC,
+    )
+    logmel_spec = (logmel_spec       - logmel_spec.min()
+              ) / (logmel_spec.max() - logmel_spec.min())
+    coc_spec = (coc_spec       - coc_spec.min()
+           ) / (coc_spec.max() - coc_spec.min())
+    spec_comb = np.vstack((coc_spec, logmel_spec))
+    return spec_comb
 
 
 FUNCOES_GERACAO_SPEC = {"melspec": gerar_mel_spec,
                         "logmel": gerar_log_mel_spec,
                         "l2m": gerar_l2_mel_spec,
                         "l3m": gerar_l3_mel_spec,
-                        "cochleo": gerar_cochleogram,
+                        "cochleagram": gerar_cochleagram,
+                        "lm-cochlea": gerar_logmel_cochle,
                         }
 
 #--------------------------------------
