@@ -1,6 +1,9 @@
 import os
 import librosa
 import numpy as np
+import cv2
+import pycochleagram.cochleagram as cgram
+import pycochleagram.erbfilter as erb
 from config import TAM_IMAGENS
 from PIL import Image
 
@@ -23,6 +26,31 @@ def gerar_l3_mel_spec(y, sr):
     S_2linhas_dB =  (librosa.power_to_db(S_linha_dB, ref=np.max) + 60) / 10
     return S_2linhas_dB
 
+def gerar_cochleogram(y, sr):
+    hi_lim = sr//2
+    low_lim = 1
+    n_filters = int(np.floor(
+        erb.freq2erb(hi_lim) - erb.freq2erb(low_lim)
+    ) - 1)  # Calcula o número de filtros
+
+    human_co = cgram.human_cochleagram(
+        y,
+        sr=sr,
+        n = n_filters,
+        low_lim = low_lim,
+        hi_lim = hi_lim,
+        sample_factor = 1,
+        nonlinearity='db'
+    )
+    spec = cv2.resize(human_co, dsize=(128, 128),
+                      interpolation=cv2.INTER_CUBIC)
+    return spec
+    # spec_norm = 255 * (spec.max() - spec) / (spec.max() - spec.min())
+
+
+def gerar_comb(y, sr):
+    pass
+
 # Adicionar os 
 
 
@@ -30,6 +58,7 @@ FUNCOES_GERACAO_SPEC = {"melspec": gerar_mel_spec,
                         "logmel": gerar_log_mel_spec,
                         "l2m": gerar_l2_mel_spec,
                         "l3m": gerar_l3_mel_spec,
+                        "cochleo": gerar_cochleogram,
                         }
 
 #--------------------------------------

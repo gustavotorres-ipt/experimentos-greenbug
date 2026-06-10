@@ -2,7 +2,8 @@
 setlocal enabledelayedexpansion
 
 set MODELS=convnet resnet18 resnet101
-set SPECS=melspec logmel l2m l3m
+REM set SPECS=melspec logmel l2m l3m
+set SPECS=cochleo
 
 for %%M in (%MODELS%) do (
     for %%S in (%SPECS%) do (

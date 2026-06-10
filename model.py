@@ -41,7 +41,8 @@ class ResNet101(nn.Module):
     def __init__(self, num_classes):
         super(ResNet101, self).__init__()
 
-        self.resnet101 = models.resnet101(pretrained=True)
+        weights = models.ResNet101_Weights.IMAGENET1K_V1
+        self.resnet101 = models.resnet101(weights=weights)
         self.resnet101.fc = torch.nn.Linear(
             self.resnet101.fc.in_features, num_classes)
 
@@ -54,7 +55,8 @@ class ResNet18(nn.Module):
     def __init__(self, num_classes):
         super(ResNet18, self).__init__()
 
-        self.resnet18 = models.resnet18(pretrained=True)
+        weights = models.ResNet18_Weights.IMAGENET1K_V1
+        self.resnet18 = models.resnet18(weights=weights)
         self.resnet18.fc = torch.nn.Linear(
             self.resnet18.fc.in_features, num_classes)
 
