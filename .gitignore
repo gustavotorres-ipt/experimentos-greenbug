@@ -1,5 +1,4 @@
-__pycache__/
-*.wmv
+__pycache__
 *.wav
 *.pt
 *.pth
