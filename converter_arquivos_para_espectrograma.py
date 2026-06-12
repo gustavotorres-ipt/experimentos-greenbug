@@ -67,6 +67,7 @@ def main():
         dir_espectrogramas_fold = f"{dir_espectrogramas}/fold{i}"
         os.makedirs(dir_espectrogramas_fold, exist_ok=True)
 
+        print(f"Salvando espectrogramas do fold {i}")
         salvar_espectrogramas(audios_names, audio_path,
                               dir_espectrogramas_fold, args.espectrograma)
 

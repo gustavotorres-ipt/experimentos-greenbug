@@ -2,7 +2,7 @@
 
 MODELS="convnet resnet18 resnet101"
 
-SPECS="melspec logmel l2m l3m"
+SPECS="melspec logmel l2m l3m cochleagram lm-cochlea"
 
 for M in $MODELS; do
     for S in $SPECS; do
