@@ -1,0 +1,57 @@
+====================== Model resnet101 =======================
+Classifying folds for melspec
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:16<00:00,  1.68s/it]
+Classifying folds for logmel
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:16<00:00,  1.68s/it]
+Comparison between melspec and logmel:
+5113
+5890
+Disagreement metric: 0.3975919555437947
+Classifying folds for logmel
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:16<00:00,  1.63s/it]
+Classifying folds for l2m
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:15<00:00,  1.59s/it]
+Comparison between logmel and l2m:
+5876
+4919
+Disagreement metric: 0.40949986768986507
+Classifying folds for l3m
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:15<00:00,  1.57s/it]
+Comparison between logmel and l3m:
+5876
+4235
+Disagreement metric: 0.4634824027520508
+Classifying folds for cochleagram
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:16<00:00,  1.65s/it]
+Comparison between logmel and cochleagram:
+5876
+5597
+Disagreement metric: 0.3586927758666314
+
+====================== Model resnet18 =======================
+Classifying folds for logmel
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:11<00:00,  1.10s/it]
+Classifying folds for melspec
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:09<00:00,  1.06it/s]
+Comparison between logmel and melspec:
+5982
+4973
+Disagreement metric: 0.4012966393225721
+Classifying folds for l2m
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:10<00:00,  1.00s/it]
+Comparison between logmel and l2m:
+5982
+4552
+Disagreement metric: 0.44297433183381846
+Classifying folds for l3m
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:09<00:00,  1.00it/s]
+Comparison between logmel and l3m:
+5982
+3895
+Disagreement metric: 0.48862132839375494
+Classifying folds for cochleagram
+100%|███████████████████████████████████████████████████████████████████| 10/10 [00:10<00:00,  1.05s/it]
+Comparison between logmel and cochleagram:
+5982
+5636
+Disagreement metric: 0.3580312251918497

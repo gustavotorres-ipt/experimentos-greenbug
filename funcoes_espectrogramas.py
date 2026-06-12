@@ -6,6 +6,7 @@ import pycochleagram.cochleagram as cgram
 import pycochleagram.erbfilter as erb
 from config import TAM_IMAGENS
 from PIL import Image
+from tqdm import tqdm
 
 #--------------------------------------
 def gerar_mel_spec(y, sr):
@@ -45,6 +46,17 @@ def gerar_cochleagram(y, sr):
     return human_co
 
 
+def gerar_log_mel_l3m(y, sr):
+    logmel = gerar_log_mel_spec(y, sr)
+    logmel = 255 * (logmel.max() - logmel) / (logmel.max() - logmel.min())
+
+    l3m = gerar_l3_mel_spec(y, sr)
+    l3m = 255 * (l3m.max() - l3m) / (l3m.max() - l3m.min())
+
+    spec_comb = np.vstack((logmel, l3m))
+    return spec_comb
+
+
 def gerar_logmel_cochle(y, sr):
     coc_spec = gerar_cochleagram(y, sr)
     logmel_spec = gerar_log_mel_spec(y, sr)
@@ -67,6 +79,7 @@ FUNCOES_GERACAO_SPEC = {"melspec": gerar_mel_spec,
                         "l3m": gerar_l3_mel_spec,
                         "cochleagram": gerar_cochleagram,
                         "lm-cochlea": gerar_logmel_cochle,
+                        "logmel-l3m": gerar_log_mel_l3m,
                         }
 
 #--------------------------------------
@@ -90,7 +103,7 @@ def cortar_espectrograma(spectrogram, largura_janela, altura_janela):
 def salvar_espectrogramas(audio_clips, audio_path, spectrogram_path, espec_tipo):
     gerar_espectrograma = FUNCOES_GERACAO_SPEC[espec_tipo]
 
-    for i, audio_name in enumerate(audio_clips):
+    for i, audio_name in enumerate(tqdm(audio_clips)):
         y, sr = librosa.load( os.path.join(audio_path, audio_name) )
         audio_name = audio_name.replace(".mp3", "").replace(".wav", "")
 
@@ -118,7 +131,7 @@ def salvar_espectrogramas(audio_clips, audio_path, spectrogram_path, espec_tipo)
             #     im = Image.fromarray(spec_save).convert("L")
             #     im.save(full_filename)
 
-            print("Arquivo %s salvo com sucesso." % full_filename)
+            # print("Arquivo %s salvo com sucesso." % full_filename)
 
         except Exception as e:
             print( "Erro ao salvar %s: %s." % (fullpath, e) )

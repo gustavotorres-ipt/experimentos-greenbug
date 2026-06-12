@@ -78,7 +78,7 @@ def treinar_modelo(
         fold_teste
 
     """
-    input_shape = (BATCH_SIZE, *X_train[0].shape)
+    input_shape = (BATCH_SIZE, * X_train[0].shape)
 
     # X_train, y_train, X_val, y_val = split_train_val(X_train, y_train)
 

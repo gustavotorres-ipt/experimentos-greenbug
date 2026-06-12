@@ -6,4 +6,5 @@ __pycache__
 *.zip
 *.vim
 *.mp3
+test_*
 spectrograms/
