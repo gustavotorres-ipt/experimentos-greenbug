@@ -1,4 +1,5 @@
 import os
+import math
 import sys
 import json
 import torch
@@ -90,18 +91,28 @@ def treinar_modelo(
     progresso_metricas = []
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(dl_model.parameters(), lr=LEARNING_RATE)
+    # optimizer = torch.optim.Adam(dl_model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.AdamW(dl_model.parameters(), lr=LEARNING_RATE, weight_decay=1e-3)
     early_stopping = EarlyStopping()
+
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, 
+        mode='min', 
+        factor=0.7, 
+        patience=3
+    )
 
     print("Starting training...")
     for epoch in range(EPOCHS):
 
-        print(f"Epoch {epoch}...")
+        print(f"Epoch {epoch + 1}...")
 
         avg_loss_train, y_prob_train = train_one_epoch(
             X_train, y_train, dl_model, criterion, optimizer)
         avg_loss_val, y_prob_val = val_one_epoch(
             X_val, y_val, dl_model, criterion)
+
+        scheduler.step(avg_loss_val)
 
         dict_metricas_train = calc_metricas(y_train, y_prob_train, epoch)
         dict_metricas_val = calc_metricas(y_val, y_prob_val, epoch)
@@ -112,7 +123,7 @@ def treinar_modelo(
         print(f"Training loss: {avg_loss_train} / Validation loss: {avg_loss_val}")
         print(f"Training accuracy: {accuracy_train} / Validation accuracy: {accuracy_val}")
 
-        early_stopping(-accuracy_val, dl_model, epoch)
+        early_stopping(avg_loss_val, dl_model, epoch)
         if early_stopping.early_stop:
             print(f"Early stop na época {epoch}. Melhor época: {early_stopping.best_epoch}")
             break
@@ -171,10 +182,10 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
         # visualizar_imagem(X_batch)
         y_batch = torch.asarray(y_batch).to(device)
 
-        y_prob_class = dl_model(X_batch)
+        logits = dl_model(X_batch)
         # y_pred = y_prob_class.argmax(1)
 
-        loss = criterion(y_prob_class, y_batch)
+        loss = criterion(logits, y_batch)
 
         optimizer.zero_grad()
         loss.backward()
@@ -183,12 +194,13 @@ def train_one_epoch(X_train, y_train, dl_model, criterion, optimizer):
         loss_batch = loss.item()
 
         total_loss_epoch += loss_batch
-
+        y_prob_class = torch.softmax(logits, dim=1)
         y_prob_classes.append(y_prob_class.detach().cpu())
         # total_correct_epoch += (y_pred == y_batch).sum().item()
 
         # print("Loss batch:", loss_batch)
-    avg_loss_epoch = total_loss_epoch / num_samples_train
+    num_batches = math.ceil(num_samples_train / BATCH_SIZE)
+    avg_loss_epoch = total_loss_epoch / num_batches
     y_prob_classes = np.vstack(y_prob_classes)
 
     # Calcular os valores das métricas e coloca tudo em um dicionário
@@ -203,11 +215,11 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
 
     total_correct_epoch = 0
     total_loss_epoch = 0
-    num_samples_train = X_val.shape[0]
+    num_samples_val = X_val.shape[0]
     y_prob_classes = []
 
     with torch.no_grad():
-        for start_batch in range(0, num_samples_train, BATCH_SIZE):
+        for start_batch in range(0, num_samples_val, BATCH_SIZE):
 
             end_batch = start_batch + BATCH_SIZE
 
@@ -215,25 +227,29 @@ def val_one_epoch(X_val, y_val, dl_model, criterion):
             y_batch = y_val[start_batch:end_batch]
 
             X_batch = torch.asarray(X_batch).to(device)
-            X_batch = augment_batch(X_batch)
+            # X_batch = augment_batch(X_batch)
             # visualizar_imagem(X_batch)
 
             y_batch = torch.asarray(y_batch).to(device)
 
-            y_prob_class = dl_model(X_batch)
-            y_pred = y_prob_class.argmax(1)
+            logits = dl_model(X_batch)
 
-            loss = criterion(y_prob_class, y_batch)
+            loss = criterion(logits, y_batch)
 
             loss_batch = loss.item()
+
+            y_prob_class = torch.softmax(logits, dim=1)
+            y_prob_classes.append(y_prob_class.detach().cpu())
+
+            y_pred = y_prob_class.argmax(1)
 
             total_loss_epoch += loss_batch
             total_correct_epoch += (y_pred == y_batch).sum().item()
 
-            y_prob_classes.append(y_prob_class.detach().cpu())
-
             # print("Loss batch:", loss_batch)
-        avg_loss_epoch = total_loss_epoch / num_samples_train
+
+        num_batches = math.ceil(num_samples_val / BATCH_SIZE)
+        avg_loss_epoch = total_loss_epoch / num_batches
         # avg_accuracy_epoch = total_correct_epoch / num_samples_train
 
     y_prob_classes = np.vstack(y_prob_classes)

@@ -62,9 +62,14 @@ def random_brightness_contrast(batch, brightness=0.2, contrast=0.2):
 # 6. Full Augmentation Pipeline
 # ------------------------------
 def augment_batch(batch):
-    batch = add_gaussian_noise(batch, std=0.01)
-    batch = time_mask(batch, max_width=20)
-    batch = frequency_mask(batch, max_width=10)
-    batch = random_shift(batch, shift_limit=0.05)
-    batch = random_brightness_contrast(batch, brightness=0.1, contrast=0.1)
+    if random.random() < 0.5:
+        batch = add_gaussian_noise(batch, std=0.01)
+    if random.random() < 0.5:
+        batch = time_mask(batch, max_width=20)
+    if random.random() < 0.5:
+        batch = frequency_mask(batch, max_width=10)
+    if random.random() < 0.5:
+        batch = random_shift(batch, shift_limit=0.05)
+    if random.random() < 0.5:
+        batch = random_brightness_contrast(batch, brightness=0.1, contrast=0.1)
     return batch

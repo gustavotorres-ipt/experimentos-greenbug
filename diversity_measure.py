@@ -56,8 +56,10 @@ def predict_and_compare(X_val, y_val, dl_model):
             X_batch = augment_batch(X_batch)
             # visualizar_imagem(X_batch)
 
-            y_prob_class = dl_model(X_batch)
-            y_pred_batch = y_prob_class.argmax(1)
+            logits = dl_model(X_batch)
+
+            y_prob_batch = torch.softmax(logits, dim=1)
+            y_pred_batch = y_prob_batch.argmax(1)
 
             y_pred += y_pred_batch.tolist()
 

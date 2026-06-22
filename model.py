@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torchvision.models as models
 from PIL import Image
 import numpy as np
@@ -17,12 +16,13 @@ class EarlyStopping:
         self.best_model_state = None
 
     def __call__(self, val_loss, model, epoch):
-        score = -val_loss
+        score = val_loss
 
         if self.best_score is None:
             self.best_score = score
-            self.best_model_state = model.state_dict()
-        elif score < self.best_score + self.delta:
+            self.best_model_state = copy.deepcopy(model.state_dict())
+            self.best_epoch = epoch
+        elif score >= self.best_score + self.delta:
             self.counter += 1
             if self.counter >= self.patience:
                 self.early_stop = True
@@ -43,12 +43,16 @@ class ResNet101(nn.Module):
 
         weights = models.ResNet101_Weights.IMAGENET1K_V1
         self.resnet101 = models.resnet101(weights=weights)
-        self.resnet101.fc = torch.nn.Linear(
-            self.resnet101.fc.in_features, num_classes)
+        in_features = self.resnet101.fc.in_features
+        self.resnet101.fc = nn.Sequential(
+            nn.Dropout(p=0.6),
+            nn.Linear(in_features, num_classes)
+        )
+        # self.resnet101.fc = nn.Linear(in_features, num_classes)
 
     def forward(self, x):
         x = self.resnet101(x)
-        return F.softmax(x, dim=1)  # Assuming classification task
+        return x  # F.softmax(x, dim=1)  # Assuming classification task
 
 class ResNet18(nn.Module):
 
@@ -57,12 +61,15 @@ class ResNet18(nn.Module):
 
         weights = models.ResNet18_Weights.IMAGENET1K_V1
         self.resnet18 = models.resnet18(weights=weights)
-        self.resnet18.fc = torch.nn.Linear(
-            self.resnet18.fc.in_features, num_classes)
+        in_features = self.resnet18.fc.in_features
+        self.resnet18.fc = nn.Sequential(
+            nn.Dropout(p=0.4),
+            nn.Linear(in_features, num_classes)
+        )
 
     def forward(self, x):
         x = self.resnet18(x)
-        return F.softmax(x, dim=1)  # Assuming classification task
+        return x  # F.softmax(x, dim=1)  # Assuming classification task
 
 
 class ConvNet(nn.Module):

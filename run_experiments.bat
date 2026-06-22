@@ -1,9 +1,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set MODELS=resnet101 resnet18 convnet
-REM set SPECS=melspec logmel l2m l3m cochleagram lm-cochlea
-set SPECS=logmel-l3m
+set MODELS=resnet18 convnet resnet101
+set SPECS=logmel l2m l3m cochleagram lm-cochlea melspec 
 
 for %%M in (%MODELS%) do (
     for %%S in (%SPECS%) do (
